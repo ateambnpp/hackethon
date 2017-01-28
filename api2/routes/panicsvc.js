@@ -11,6 +11,7 @@ var twilioAccountSID = process.env.TWILIO_ACCOUNT_SID;
 var twilioAuth = process.env.TWILIO_AUTH_TOKEN;
 var NUMBERS = process.env.NUMBERS;
 var FROM_NUMBER = process.env.FROM_NUMBER;
+var SERVICEID = process.env.SERVICEID || "SERVICEID";
 
 if (twilioAccountSID && twilioAuth) {
     twilio = require("twilio")(twilioAccountSID, twilioAuth);
@@ -47,7 +48,8 @@ function raiseAlarm(deviceId, next) {
         }
         var args = {
             owner: owner,
-            action: "BOOL"
+            action: "BOOL",
+            serviceID: SERVICEID
         };
         blockchain.getConsumers(args, function (err, devices) {
             if (err) {
