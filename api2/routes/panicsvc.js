@@ -2,6 +2,8 @@ var express = require('express');
 var blockchain = require("../lib/blockchain");
 var router = express.Router();
 
+var request = require("request");
+
 var https = require("https");
 
 var SMS_SERVICEID = "SMSID";
@@ -52,7 +54,7 @@ function raiseAlarm(deviceId, next) {
                 sendSMS();
             }
             if (devices.indexOf(SLACK_SERVICEID) > -1) {
-                sendSlack();
+                sendSlack({message: "Granny has died"});
             }
         });
     });
@@ -91,9 +93,10 @@ function soundAlarm() {
     });
 }
 
-function sendSlack() {
-
+function sendSlack(args) {
+    request("https://slack.com/api/chat.postMessage?token=xoxp-108095108048-108170107008-133766850867-43cf077c44138b23beb66587e5c92f21&pretty=1&channel=C363Q8Q1X&text=" + encodeURIComponent(args.message));
 }
+
 
 function sendSMS() {
 
