@@ -28,36 +28,43 @@ app.get('/api/contract/address', function (req, res) {
 
 // Distribution
 
-app.get('/api/service/distribution/serviceId', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
+app.post('/api/devices/distribution', function (req, res) {
+	console.log(req.body)
+	var service_id = req.query.serviceid || 'no-input';
+	var action = req.query.action || 'no-input';
+	var person_id = req.query.personid || 'no-input';
+	res.status(200).send("Test Response :" + service_id + ' ' + action + '' + person_id);
 });
 
-app.get('/api/service/distribution/action', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
-});
-
-app.get('/api/service/distribution/date', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
-});
-
-app.get('/api/service/distribution/personId', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
-});
 
 // Action
 
-app.get('/api/service/action/deviceId', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
+app.post('/api/devices/action', function (req, res) {
+	  var service_id = req.query.serviceid;
+		var action = req.query.action;
+		var person_id = req.query.personid;
+		res.status(200).send("Test Response :" + service_id + ' ' + action + '' + person_id);
 });
 
-app.get('/api/service/action/action', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
+//  API - Function
+
+app.post('/api/panic-service/button', function (req, res) {
+	var action = req.query.action;
+	var device_id = req.query.deviceid;
+	res.status(200).send("Test Response :" + action + '' + device_id);
 });
 
-app.get('/api/service/action/date', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
+app.post('/api/panic-service/lbadapter', function (req, res) {
+	var action = req.query.action;
+	var device_id = req.query.deviceid;
+	res.status(200).send("Test Response :" + action + '' + device_id);
 });
 
+app.post('/api/panic-service/action', function (req, res) {
+	var action = req.query.triggered;
+	var device_id = req.query.deviceid;
+	res.status(200).send("Test Response :" + action + '' + device_id);
+});
 
 // ----------------------------------- WIRE & START WEB SERVER  ------------------------
 app.use('/', express.static(__dirname + '/public'));
@@ -73,3 +80,5 @@ var server = app.listen(8082, function () {
 
 	console.log("nurseAlarm listening at http://%s:%s", host, port)
 })
+
+module.exports = server;
