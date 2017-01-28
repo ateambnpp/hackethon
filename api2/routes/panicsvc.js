@@ -6,6 +6,16 @@ var request = require("request");
 
 var https = require("https");
 
+var twilio = undefined;
+var twilioAccountSID = process.env.TWILIO_ACCOUNT_SID;
+var twilioAuth = process.env.TWILIO_AUTH_TOKEN;
+var NUMBERS = process.env.NUMBERS;
+var FROM_NUMBER = process.env.FROM_NUMBER;
+
+if (twilioAccountSID && twilioAuth) {
+    twilio = require("twilio")(twilioAccountSID, twilioAuth);
+}
+
 var SMS_SERVICEID = process.env.SMSID || "SMSID";
 var SLACK_SERVICEID = process.env.SLACKID || "SLACKID";
 var ALARM_ID = process.env.ALARMID || "ALARMID";
@@ -55,11 +65,14 @@ function raiseAlarm(deviceId, next) {
                 console.error(err);
                 return;
             }
+
+            var text_args = {message: "Granny has died... dancing... she was happy"};
+
             if (devices.indexOf(SMS_SERVICEID) > -1) {
-                sendSMS();
+                sendSMS(text_args);
             }
             if (devices.indexOf(SLACK_SERVICEID) > -1) {
-                sendSlack({message: "Granny has died... dancing... she was happy"});
+                sendSlack(text_args);
             }
         });
     });
@@ -102,8 +115,30 @@ function sendSlack(args) {
     request("https://slack.com/api/chat.postMessage?token=xoxp-108095108048-108170107008-133766850867-43cf077c44138b23beb66587e5c92f21&pretty=1&channel=C363Q8Q1X&text=" + encodeURIComponent(args.message));
 }
 
-function sendSMS() {
+function sendSMS(args) {
+    if(twilio && NUMBERS) {
+        var numbers = NUMBERS.split(",");
+        numbers = numbers.map(function (num) {
+            return num.trim();
+        });
 
+        for (var i = 0; i < numbers.length; i++) {
+            var number = numbers[i];
+            twilio.messages.create({
+                to: number,
+                from: FROM_NUMBER,
+                body: args.message,
+            }, function(err, message) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                if (message) {
+                    console.log(message.sid);
+                }
+            });
+        }
+    }
 }
 
 module.exports = router;
