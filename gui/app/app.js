@@ -1,1 +1,1 @@
-var app = angular.module("hack-gui", []);
+var app = angular.module("hack-gui", ["ngRoute"]);
