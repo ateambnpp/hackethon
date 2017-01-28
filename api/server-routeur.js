@@ -9,8 +9,6 @@ var web3 = new Web3();
 // web3.setProvider(new web3.providers.HttpProvider(WEB3_RPC));
 // web3.eth.defaultAccount = web3.eth.accounts[0];
 
-
-
 ///-
 var bodyParser = require('body-parser')
 app.use(bodyParser.json());       	// to support JSON-encoded bodies
