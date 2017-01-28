@@ -41,7 +41,7 @@ var test = function(){
             'Authorization': 'Bearer 5fc3e2e92182b4f3c10796adad5d84db3505022e0a3f0d25dfccb308f18c2304',
             'Content-Type': 'application/json'
         }
-    }
+    };
 
     var postRequest = https.request(postOptions, function(res) {
        // res.setEncoding('utf-8');
