@@ -32,4 +32,5 @@ contract Device is Service {
     function Device(){
         owner = msg.sender;
     }
+
 }

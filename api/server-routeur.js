@@ -2,12 +2,20 @@ var express = require('express');
 var app = express();
 
 // LOCAL
-var WEB3_RPC = 'http://127.0.0.1:8110';
+var WEB3_RPC = 'http://blockone-norsborg-rpc.tr-api-services.net:8545/';
 // -DEPENDENCIES
 var Web3 = require('web3');
 var web3 = new Web3();
-// web3.setProvider(new web3.providers.HttpProvider(WEB3_RPC));
-// web3.eth.defaultAccount = web3.eth.accounts[0];
+web3.setProvider(new web3.providers.HttpProvider(WEB3_RPC));
+web3.eth.defaultAccount = web3.eth.accounts[0];
+
+var deviceContract = [{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"enableOutput","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"disabelOutput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"disabelInput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"enableInput","outputs":[],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}]
+var personalContract = [{"constant":false,"inputs":[{"name":"_device","type":"address"}],"name":"removeDevice","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"},{"name":"_service","type":"address"},{"name":"_action","type":"string"}],"name":"addConsumer","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"},{"name":"_service","type":"address"},{"name":"_action","type":"string"}],"name":"removeConsumer","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"}],"name":"addDevice","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_action","type":"string"},{"name":"_service","type":"address"}],"name":"getConsummer","outputs":[{"name":"_devices","type":"address[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"test","outputs":[{"name":"","type":"address[]"}],"payable":false,"type":"function"}]
+var serviceContract = [{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"enableOutput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"disabelOutput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"disabelInput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"enableInput","outputs":[],"payable":false,"type":"function"}]
+
+deviceInstance = deviceContract.at("0x0bf0d0764526c268c93f61e58d275a0ccfb58105")
+personalInstance = personalContract.at("0x0362596aa8aba98c7161aed5080f5994d46cfbaf")
+serviceInstance = serviceContract.at("0x515b272d7876687294432dc4c4f3a92984851430")
 
 ///-
 var bodyParser = require('body-parser')
@@ -19,7 +27,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 //- API - Device => contract
 
 app.get('/api/contract/address', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
+	res.status(200).send({ "status": "OK", "data": JSON.stringify(["0x0bf0d0764526c268c93f61e58d275a0ccfb58105","0x0362596aa8aba98c7161aed5080f5994d46cfbaf","0x515b272d7876687294432dc4c4f3a92984851430"]) });
 });
 
 //- API - Device => Router
