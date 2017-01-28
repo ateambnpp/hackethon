@@ -15,10 +15,15 @@ contract Personal {
     address[]  ret;
 
     function addDevice(address _device) public {
-
+        ownedDevices.push(_device);
     }
     function removeDevice(address _device) {
-
+        for (uint i = 0; i < ownedDevices.length; i++){
+            if (ownedDevices[i] == _device) {
+                ownedDevices[i] = ownedDevices[ownedDevices.length-1];
+                delete ownedDevices[ownedDevices.length -1];
+            }
+        }
     }
 
     struct mappingServiceConsumer {
