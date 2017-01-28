@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 //- API - Device => contract
 
 app.get('/api/contract/address', function (req, res) {
-	res.status(200).send({ "status": "OK", "data": "Helloworld" });
+	res.status(200).send({ "status": "OK", "data": JSON.stringify(["0x0bf0d0764526c268c93f61e58d275a0ccfb58105","0x0362596aa8aba98c7161aed5080f5994d46cfbaf","0x515b272d7876687294432dc4c4f3a92984851430"]) });
 });
 
 //- API - Device => Router
