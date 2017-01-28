@@ -8,6 +8,14 @@ app.config(['$routeProvider','$locationProvider', '$httpProvider', function($rou
             templateUrl: 'app/partials/devices.html',
             controller: 'DevicesCtrl'
         })
+        .when('/services', {
+            templateUrl: 'app/partials/services.html',
+            controller: 'ServicesCtrl'
+        })
+        .when('/service', {
+            templateUrl: 'app/partials/service.html',
+            controller: 'ServiceCtrl'
+        })
         .otherwise({
             redirectTo: "/home"
         });

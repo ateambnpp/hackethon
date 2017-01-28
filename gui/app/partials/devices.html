@@ -1,3 +1,32 @@
 <div id="page-devices">
     <h2>Devices</h2>
+
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="device in devices">
+            <td>{{ device.name }}</td>
+            <td>{{ device.id }}</td>
+            <td><ul ng-repeat="action in device.actions">
+                <li>{{ action }}</li>
+            </ul></td>
+        </tr>
+        <tr>
+            <td>
+                <input class="form-control" type="text" ng-model="newDevice.name" id="name" placeholder="Device Name" />
+            </td>
+            <td><label for="actionList">Device Actions (separate by comma)</label></td>
+            <td>
+                <input class="form-control" type="text" ng-model="newDevice.actionList" id="actionList" placeholder="Actions e.g. BOOL_OUT,BOOL_IN,TEXT_OUT" />
+            </td>
+            <td><button class="btn btn-primary" ng-click="addDevice(newDevice)">Add Device</button></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
