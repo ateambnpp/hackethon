@@ -1,11 +1,6 @@
 pragma solidity ^0.4.2;
 
-import "Actions.sol";
-import "Device.sol";
-
 contract Personal {
-
-
 //list of devices owned : address of smart contracts
 //add/remove a device
 //add/remove services
@@ -13,8 +8,11 @@ contract Personal {
 //mapping between service and device, with the actions
 //getConsumers(action, service) return device (one or more --> array of addresses smart contracts)
 
+
+
     address[] ownedDevices;
     mappingServiceConsumer mp;
+    address[]  ret;
 
     function addDevice(address _device) public {
 
@@ -37,25 +35,25 @@ contract Personal {
     }
 
     function removeConsumer(address _device, address _service, string _action) public {
-        int index = -1;
+        uint index = 6666;
 
-        for(int i; i < mapConsumers.length; i++){
-            if ((mapConsumers[i].action == _action) && (mapConsumers[i].service == _service) && (mapConsumers[i].device == _device)){
+        for(uint i; i < mapConsumers.length; i++){
+            if ((stringsEqual(mapConsumers[i].action, _action)) && (mapConsumers[i].service == _service) && (mapConsumers[i].device == _device)){
                 index = i;
                 break;
             }
         }
         // remove by index
-        if (index != -1){
+        if (index != 6666){
             mapConsumers[index] = mapConsumers[mapConsumers.length-1];
             delete mapConsumers[mapConsumers.length-1];
         }
     }
 
     function getConsummer(string _action, address _service) public returns (address[] _devices){
-        address[] memory ret;
+        delete  ret;
         for(uint i; i < mapConsumers.length; i++){
-            if ((mapConsumers[i].action == _action) && (mapConsumers[i].service == _service)){
+            if ((stringsEqual(mapConsumers[i].action, _action)) && (mapConsumers[i].service == _service)){
                 ret.push(mapConsumers[i].device);
             }
         }
@@ -64,5 +62,17 @@ contract Personal {
 
     function test() returns (address[]){
 
+    }
+
+    function stringsEqual(string storage _a, string memory _b) internal returns (bool) {
+        bytes storage a = bytes(_a);
+        bytes memory b = bytes(_b);
+        if (a.length != b.length)
+            return false;
+        // @todo unroll this loop
+        for (uint i = 0; i < a.length; i ++)
+            if (a[i] != b[i])
+                return false;
+        return true;
     }
 }
