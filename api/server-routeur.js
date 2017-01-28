@@ -36,7 +36,6 @@ app.post('/api/devices/distribution', function (req, res) {
 	res.status(200).send("Test Response :" + service_id + ' ' + action + '' + person_id);
 });
 
-
 // Action
 
 app.post('/api/devices/action', function (req, res) {
@@ -46,25 +45,15 @@ app.post('/api/devices/action', function (req, res) {
 		res.status(200).send("Test Response :" + service_id + ' ' + action + '' + person_id);
 });
 
-//  API - Function
-
-app.post('/api/panic-service/button', function (req, res) {
-	var action = req.query.action;
-	var device_id = req.query.deviceid;
-	res.status(200).send("Test Response :" + action + '' + device_id);
-});
-
-app.post('/api/panic-service/lbadapter', function (req, res) {
-	var action = req.query.action;
-	var device_id = req.query.deviceid;
-	res.status(200).send("Test Response :" + action + '' + device_id);
-});
-
-app.post('/api/panic-service/action', function (req, res) {
-	var action = req.query.triggered;
-	var device_id = req.query.deviceid;
-	res.status(200).send("Test Response :" + action + '' + device_id);
-});
+// app.get('/api/users',function (req, res) {
+// 	var device_id = req.query.deviceid;
+// 	res.status(200).send("Test Response :" + device_id);
+// });
+//
+// app.get('/api/getServices',function (req, res) {
+// 	var json = JSON.stringify(['Alarms','Sms']);
+// 	res.status(200).send(json);
+// });
 
 // ----------------------------------- WIRE & START WEB SERVER  ------------------------
 app.use('/', express.static(__dirname + '/public'));
