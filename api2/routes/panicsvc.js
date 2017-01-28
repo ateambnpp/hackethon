@@ -6,19 +6,20 @@ var request = require("request");
 
 var https = require("https");
 
-var SMS_SERVICEID = "SMSID";
-var SLACK_SERVICEID = "SLACKID";
-var ALARM_ID = "ALARMID";
+var SMS_SERVICEID = process.env.SMSID || "SMSID";
+var SLACK_SERVICEID = process.env.SLACKID || "SLACKID";
+var ALARM_ID = process.env.ALARMID || "ALARMID";
+var BUTTON_DEVICE_ID = process.env.BUTTON_DEVICE_ID || "BUTTONID";
+
 
 router.post("/action", function (req, res, next)  {
-    var device_id = "Hardcoded ID";
+    var device_id = BUTTON_DEVICE_ID;
 
     raiseAlarm(device_id);
-
     return res.status(200).send("OK");
 });
 router.get("/action", function (req, res, next)  {
-    var device_id = "Hardcoded ID";
+    var device_id = BUTTON_DEVICE_ID;
 
     raiseAlarm(device_id);
 
@@ -26,6 +27,10 @@ router.get("/action", function (req, res, next)  {
 });
 
 function raiseAlarm(deviceId, next) {
+    if (!deviceId) {
+        return next({message: "deviceId is required."});
+    }
+
     blockchain.whoOwnsDevice({deviceID: deviceId}, function (err, owner) {
         if (err) {
             return next(err);
@@ -54,7 +59,7 @@ function raiseAlarm(deviceId, next) {
                 sendSMS();
             }
             if (devices.indexOf(SLACK_SERVICEID) > -1) {
-                sendSlack({message: "Granny has died"});
+                sendSlack({message: "Granny has died... dancing... she was happy"});
             }
         });
     });
@@ -96,7 +101,6 @@ function soundAlarm() {
 function sendSlack(args) {
     request("https://slack.com/api/chat.postMessage?token=xoxp-108095108048-108170107008-133766850867-43cf077c44138b23beb66587e5c92f21&pretty=1&channel=C363Q8Q1X&text=" + encodeURIComponent(args.message));
 }
-
 
 function sendSMS() {
 
