@@ -4,7 +4,16 @@ var https = require('https');
 var app = express();
 
 // LOCAL
-var WEB3_RPC = 'http://127.0.0.1:8110';
+var WEB3_RPC = 'http://blockone-norsborg-rpc.tr-api-services.net:8545/';
+
+var deviceContract = [{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"enableOutput","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"disabelOutput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"disabelInput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"enableInput","outputs":[],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}]
+var personalContract = [{"constant":false,"inputs":[{"name":"_device","type":"address"}],"name":"removeDevice","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"},{"name":"_service","type":"address"},{"name":"_action","type":"string"}],"name":"addConsumer","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"},{"name":"_service","type":"address"},{"name":"_action","type":"string"}],"name":"removeConsumer","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"}],"name":"addDevice","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_action","type":"string"},{"name":"_service","type":"address"}],"name":"getConsummer","outputs":[{"name":"_devices","type":"address[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"test","outputs":[{"name":"","type":"address[]"}],"payable":false,"type":"function"}]
+var serviceContract = [{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"enableOutput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"disabelOutput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"disabelInput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"enableInput","outputs":[],"payable":false,"type":"function"}]
+
+deviceInstance = deviceContract.at("0x0bf0d0764526c268c93f61e58d275a0ccfb58105")
+personalInstance = personalContract.at("0x0362596aa8aba98c7161aed5080f5994d46cfbaf")
+serviceInstance = serviceContract.at("0x515b272d7876687294432dc4c4f3a92984851430")
+
 // -DEPENDENCIES
 var Web3 = require('web3');
 var web3 = new Web3();
@@ -57,14 +66,15 @@ var test = function(){
 
 app.post('/api/alarm', function (req, res) {
   // Watch the events "Panic"
-  // Call the deviceBelongTo(device_id) methods that return the user address / contract address
+  // Instate the ABI with the address
+  // Make a call for the owner
   ////////////
   console.log(test())
   /////////////
   //
 	var action = req.query.action;
 	var device_id = req.query.deviceid;
-    ///
+  ///
 
 	res.status(200).send("Test Response :" + action + '' + device_id);
 });
