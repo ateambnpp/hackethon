@@ -5,7 +5,6 @@ var config = require("./config");
 
 var blockchain = require("../lib/blockchain");
 
-
 /* GET home page. */
 
 router.get('/remove/:id', function (req, res) {
@@ -24,6 +23,7 @@ router.get('/remove/:id', function (req, res) {
         res.status(200).end();
     } );
 });
+
 router.get('/add/:id', function (req, res) {
     var args = {
         deviceID: req.params.id,
@@ -40,8 +40,19 @@ router.get('/add/:id', function (req, res) {
         res.status(200).end();
     } );
 });
-/*
+
+router.get("/deploy123", function (req, res) {
+    blockchain.doDeploy(function (err, response) {
+        if (err) {
+            console.error(err);
+            return res.status(501).end();
+        }
+
+        res.status(200).end();
+    });
+});
+
 router.get('/', function(req, res, next) {
     res.status(200).json(config);
-});*/
+});
 module.exports = router;
