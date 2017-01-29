@@ -1,8 +1,8 @@
 module.exports = {
-    "serviceAddress": "0x96b1160c1f23b6912668fb196d58990b42f8fa0f",
-    "personAddress": "0x8a4e5ff1a4f9f3c2819817c391f1226f120d0f0d",
-    "slackService": "0x0c9944dd27cb396d235f0788766cb249741673bb",
-    "smsService": "0x5c5973ff25a05b9406411378750c711a8e2fe623",
-    "alarmService": "0x1faae525511aea470b62dc623cf33280ad5a176b",
-    "deviceAddress": "0xdf6e651f6fc5eb672e9ce29fc63e3ed3ee8f12b8"
+    "serviceAddress": "0xf2c1ad37eb1566113197baf5b5ea287a8adc16bb",
+    "personAddress": "0x0686b3faf1f8583e0c5e2a75e210b91d920d9d3e",
+    "slackService": "0xbf20efeedba955e8c2c0544cde012481fae3dc9b",
+    "smsService": "0x94e57cf530f7360b07efb8df7442d06e336c8192",
+    "alarmService": "0xff06dde74227b1ed3cb63300f904aefa354c1c17",
+    "deviceAddress": "0x81c7278e42bdc83b5d33da5433c87e15c3ec5e56"
 }
