@@ -222,11 +222,18 @@ function linkDevicesAndOwners(personAddress, serviceAddress, deviceAddresses, ne
             if (err) {
                 return next(err);
             }
-            console.log("DONE");
             next(null, "Done");
         });
     });
 }
+
+doDeploy(function (err) {
+    if (err) {
+        return next(err);
+    }
+    console.log("done");
+});
+
 module.exports = {
     doDeploy: doDeploy
 };
