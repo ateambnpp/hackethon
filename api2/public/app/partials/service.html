@@ -1,4 +1,7 @@
 <div id="page-service">
+    <button ng-click="addSMSService()" class="btn btn-primary">Link SMS Service</button>
+    <button ng-click="linkSlack()" class="btn btn-primary">Link Slack Service</button>
+    <button ng-click="linkAlarm()" class="btn btn-primary">Link ALARM</button>
     <h2>{{ data.service.name }}</h2>
     <servicedevice service="service" devices="devices" edges="edges" data="data" remove-link="removeLink(id)"></servicedevice>
 

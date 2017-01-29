@@ -173,10 +173,9 @@ app.directive('servicedevice', function($window) {
                         var result = window.confirm("Do you want to delete this link?");
                         if (result === true) {
                             var edge = obj.json();
-                            var address = edge.data.target.split(":")[0];
+                            var address = edge.data.target;
                             scope.$parent.removeLink({address: address});
                         }
-
                     }
                 });
             }

@@ -7,12 +7,12 @@ var blockchain = require("../lib/blockchain");
 
 /* GET home page. */
 
-router.get('/remove/:id', function (req, res) {
+router.get('/remove/:id/:action', function (req, res) {
     var args = {
         deviceID: req.params.id,
         serviceAddress: config.serviceAddress,
         personAddress: config.personAddress,
-        action: "TEXT"
+        action: req.params.action
     };
 
     blockchain.removeConsumer(args, function (err) {
@@ -24,12 +24,12 @@ router.get('/remove/:id', function (req, res) {
     } );
 });
 
-router.get('/add/:id', function (req, res) {
+router.get('/add/:id/:action', function (req, res) {
     var args = {
         deviceID: req.params.id,
         serviceAddress: config.serviceAddress,
         personAddress: config.personAddress,
-        action: "TEXT"
+        action: req.params.action
     };
 
     blockchain.addConsumer(args, function (err) {
