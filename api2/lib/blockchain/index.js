@@ -63,6 +63,34 @@ function getConsumers(args, next) {
     next(null, consumers);
 }
 
+function getAllConsumersForService(args, next) {
+    if (!args) {
+        return next({message: "args is required."});
+    }
+    if (!args.owner) {
+        return next({message: "args.owner is required."});
+    }
+    if (!args.serviceAddress) {
+        return next({message: "args.serviceAddress is required."});
+    }
+
+    var person = personalContract.at(args.owner);
+    var consumers = [];
+    try {
+        for (var i = 0; i < 999; i++) {
+            var consumer = person.mapConsumers.call(i);
+            if (consumer[1] == args.serviceAddress) {
+                consumers.push(consumer);
+            }
+        }
+    } catch(e) {
+        console.log("DONE");
+    }
+
+    next(null, consumers);
+
+}
+
 function setOwner(args, next) {
     if (!args) {
         return next({message: "args is required."});
@@ -130,5 +158,6 @@ module.exports = {
     getConsumers: getConsumers,
     setOwner: setOwner,
     removeConsumer: removeConsumer,
-    addConsumer: addConsumer
+    addConsumer: addConsumer,
+    getAllConsumersForService: getAllConsumersForService
 };
