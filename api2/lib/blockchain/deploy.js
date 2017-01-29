@@ -218,11 +218,13 @@ function linkDevicesAndOwners(personAddress, serviceAddress, deviceAddresses, ne
 
         var data = "module.exports = " + JSON.stringify(config, null, 4);
 
-        fs.writeFileSync("../../routes/config.js", data );
-
-
-        console.log("DONE");
-        next(null, "Done");
+        fs.writeFile("../../routes/config.js", data, function (err) {
+            if (err) {
+                return next(err);
+            }
+            console.log("DONE");
+            next(null, "Done");
+        });
     });
 }
 module.exports = {
