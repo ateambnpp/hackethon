@@ -153,11 +153,14 @@ function addConsumer(args, next) {
     person.addConsumer.sendTransaction(args.deviceID, args.serviceAddress, args.action,  { gas: 4000000, from: web3.eth.defaultAccount}, next);
 }
 
+var deploy = require("./deploy");
+
 module.exports = {
     whoOwnsDevice: whoOwnsDevice,
     getConsumers: getConsumers,
     setOwner: setOwner,
     removeConsumer: removeConsumer,
     addConsumer: addConsumer,
-    getAllConsumersForService: getAllConsumersForService
+    getAllConsumersForService: getAllConsumersForService,
+    doDeploy: deploy.doDeploy
 };
