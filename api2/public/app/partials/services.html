@@ -1,0 +1,20 @@
+<div id="page-services">
+    <h2>Your Available Services</h2>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="service in services">
+            <td>{{ service.name }}</td>
+            <td><ul>
+                <li ng-repeat="action in service.actions">{{ action }}</li>
+            </ul></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
