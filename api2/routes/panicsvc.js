@@ -1,7 +1,7 @@
 var express = require('express');
 var blockchain = require("../lib/blockchain");
 var router = express.Router();
-
+var config = require("./config");
 var request = require("request");
 
 var https = require("https");
@@ -11,18 +11,17 @@ var twilioAccountSID = process.env.TWILIO_ACCOUNT_SID;
 var twilioAuth = process.env.TWILIO_AUTH_TOKEN;
 var NUMBERS = process.env.NUMBERS;
 var FROM_NUMBER = process.env.FROM_NUMBER;
-//var SERVICEID = process.env.SERVICEID || "0xa79edac523f06cc398b35b9db8043b265c511aa0";
-var SERVICEID = "0x904af3f83fd99a870d54229d3d875ce354b3bde4";
 
 if (twilioAccountSID && twilioAuth) {
     twilio = require("twilio")(twilioAccountSID, twilioAuth);
 }
 
-var SMS_SERVICEID = process.env.SMSID || "SMSID";
-var SLACK_SERVICEID = process.env.SLACKID || "SLACKID";
-var ALARM_ID = process.env.ALARMID || "ALARMID";
-//var BUTTON_DEVICE_ID = process.env.BUTTON_DEVICE_ID || "0xcc0bd23b7a986c1a13e3447eb409b376ec7e68e2";
-var BUTTON_DEVICE_ID =  "0xa19288db92559088d4010fc0ae510fd2669c3dc2";
+var SMS_SERVICEID = config.smsService || "SMSID";
+var SLACK_SERVICEID = config.slackService || "SLACKID";
+var ALARM_ID = config.alarmService || "ALARMID";
+
+var BUTTON_DEVICE_ID =  config.deviceAddress;
+var SERVICEID = config.serviceAddress;
 
 
 router.post("/action", function (req, res, next)  {
@@ -87,6 +86,7 @@ function raiseAlarm(deviceId, next) {
 }
 
 function soundAlarm() {
+    console.log("I'm' sounding the alarm");
     var postData = JSON.stringify({ 'percent': 100, 'duration_ms': 2000 });
 
     var postOptions = {
@@ -120,10 +120,13 @@ function soundAlarm() {
 }
 
 function sendSlack(args) {
+    console.log("I'm' sending slack");
+
     request("https://slack.com/api/chat.postMessage?token=xoxp-108095108048-108170107008-133766850867-43cf077c44138b23beb66587e5c92f21&pretty=1&channel=C363Q8Q1X&text=" + encodeURIComponent(args.message));
 }
 
 function sendSMS(args) {
+    console.log("I'm' sending sms");
     if(twilio && NUMBERS) {
         var numbers = NUMBERS.split(",");
         numbers = numbers.map(function (num) {

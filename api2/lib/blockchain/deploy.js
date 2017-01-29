@@ -2,8 +2,10 @@ var Web3 = require('web3');
 var async = require("async");
 var web3 = new Web3();
 
-//var WEB3_RPC =  process.env.WEB3_RPC || 'http://ac5b2c490b76111e693b00216fd30015-1818368795.eu-west-1.elb.amazonaws.com:8545';
-var WEB3_RPC =  "http://vps261196.ovh.net:8545";
+var fs = require("fs");
+
+var WEB3_RPC =  process.env.WEB3_RPC || 'http://ac5b2c490b76111e693b00216fd30015-1818368795.eu-west-1.elb.amazonaws.com:8545';
+//var WEB3_RPC =  "http://vps261196.ovh.net:8545";
 
 var deviceContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"setOwner","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"enableOutput","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionOutput","type":"string"}],"name":"disabelOutput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"disabelInput","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_actionInput","type":"string"}],"name":"enableInput","outputs":[],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}]);
 var personalContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_device","type":"address"}],"name":"removeDevice","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"mapConsumers","outputs":[{"name":"device","type":"address"},{"name":"service","type":"address"},{"name":"action","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"},{"name":"_service","type":"address"},{"name":"_action","type":"string"}],"name":"addConsumer","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"},{"name":"_service","type":"address"},{"name":"_action","type":"string"}],"name":"removeConsumer","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_device","type":"address"}],"name":"addDevice","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_action","type":"string"},{"name":"_service","type":"address"}],"name":"getConsummer","outputs":[{"name":"_devices","type":"address[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"test","outputs":[{"name":"","type":"address[]"}],"payable":false,"type":"function"}]);
@@ -108,6 +110,17 @@ function doDeploy(cb) {
         });
     });
     funcs.push(function(next) {
+        deployDevice(function(err, response) {
+            if (err) {
+                return next(err);
+            }
+            if (response.address) {
+                deviceAddresses.push(response.address);
+                next();
+            }
+        });
+    });
+    funcs.push(function(next) {
         deployPerson(function(err, response) {
             if (err) {
                 return next(err);
@@ -134,6 +147,7 @@ function doDeploy(cb) {
         if (err) {
             return console.error(err);
         }
+
         linkDevicesAndOwners(personAddress, serviceAddress, deviceAddresses, cb);
     });
 
@@ -142,35 +156,20 @@ function doDeploy(cb) {
 function linkDevicesAndOwners(personAddress, serviceAddress, deviceAddresses, next) {
     var fn = [];
 
-/*
-    for (var i = 0; i < deviceAddresses.length; i++) {
-        var deviceAddress = deviceAddresses[i];
-        fn.push(function (next) {
+    fn.push(function (next) {
+        for (var i = 0; i < deviceAddresses.length; i++) {
+            var deviceAddress = deviceAddresses[i];
             var device = deviceContract.at(deviceAddress);
-            device.owner.sendTransaction(personAddress, { gas: 4000000, from: web3.eth.defaultAccount}, function (err, response) {
+            device.setOwner.sendTransaction(personAddress, { gas: 4000000, from: web3.eth.defaultAccount}, function (err, response) {
                 if (err) {
                     return next(err);
                 }
                 console.log(response);
-                next();
             });
-        });
-    }
-*/
+        }
+        next();
+    });
 
-        fn.push(function (next) {
-            for (var i = 0; i < deviceAddresses.length; i++) {
-                var deviceAddress = deviceAddresses[i];
-                var device = deviceContract.at(deviceAddress);
-                device.setOwner.sendTransaction(personAddress, { gas: 4000000, from: web3.eth.defaultAccount}, function (err, response) {
-                    if (err) {
-                        return next(err);
-                    }
-                    console.log(response);
-                });
-            }
-            next();
-        });
     var person = personalContract.at(personAddress);
 
     fn.push(function (next) {
@@ -208,40 +207,24 @@ function linkDevicesAndOwners(personAddress, serviceAddress, deviceAddresses, ne
             console.error(err);
             return;
         }
+        var config = {
+            serviceAddress: serviceAddress,
+            personAddress: personAddress,
+            slackService: deviceAddresses[0],
+            smsService: deviceAddresses[1],
+            alarmService: deviceAddresses[2],
+            deviceAddress: deviceAddresses[3],
+        };
+
+        var data = "module.exports = " + JSON.stringify(config, null, 4);
+
+        fs.writeFileSync("../../routes/config.js", data );
+
 
         console.log("DONE");
         next(null, "Done");
     });
 }
-
-/*
-doDeploy(function (err, response) {
- if (err) {
- return console.error(err);
- }
- console.log(response);
- });
-*/
-
-
-var person = personalContract.at("0xbcd2cecd0612b20bf0eaa6fb9e61f76123541214");
-
-try {
-    for (var i = 0; i < 999; i++) {
-        console.log(person.mapConsumers.call(i));
-    }
-} catch(e) {
-    console.log("DONE");
-}
-
-
-var device = deviceContract.at("0xa19288db92559088d4010fc0ae510fd2669c3dc2");
-
-console.log("DEVICEOWNER", device.owner.call());
-  /*
-device.owner.sendTransaction("0x78e617fcde8a5a6e1aee46f26b87766612378595", { gas: 400000, from: web3.eth.defaultAccount }, function () {
-    console.log("DEVICEOWNER AFTER", device.owner.call());
-
-});
-
-*/
+module.exports = {
+    doDeploy: doDeploy
+};
