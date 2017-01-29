@@ -12,7 +12,7 @@ app.config(['$routeProvider','$locationProvider', '$httpProvider', function($rou
             templateUrl: 'app/partials/services.html',
             controller: 'ServicesCtrl'
         })
-        .when('/service', {
+        .when('/service/:id', {
             templateUrl: 'app/partials/service.html',
             controller: 'ServiceCtrl'
         })

@@ -9,7 +9,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="service in services">
-            <td>{{ service.name }}</td>
+            <td><a href="#/service/{{service.id}}"> {{ service.name }}</a></td>
             <td><ul>
                 <li ng-repeat="action in service.actions">{{ action }}</li>
             </ul></td>

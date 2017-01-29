@@ -1,22 +1,13 @@
 var app = angular.module("hack-gui", ["ngRoute"]);
 app.controller("DevicesCtrl", ["$scope", "$http", function ($scope, $http) {
-    $scope.devices = [
-        {
-            name: "Panic Button",
-            id: "ABA2a32234acedfe3323232323",
-            actions: [
-                 "BOOL_OUT",
-            ]
-        },
-        {
-            name: "Alarm",
-            id: "CDEEDEDEFACDE2a32234acedfe3323232323",
-            actions: [
-                 "BOOL_IN",
-            ]
-        },
+    $http.get("/api/device/list")
+        .then(function (data) {
+            console.log(data);
+            $scope.devices = data.data;
+        },function (err) {
+            console.log(err);
+        });
 
-    ];
 
     $scope.newDevice = {};
 
@@ -38,13 +29,15 @@ app.controller("HomeCtrl", ["$scope", "$http", function ($scope, $http) {
 
 }]);
 app.controller("ServiceCtrl", ["$scope", "$http", function ($scope, $http) {
+    //$http.get("/api/success/")
+
+
     $scope.service = {
         name: "Panic Service",
         actions: [
-            "TEXT_PRODUCE",
-            "TEXT_RECEIVE",
-            "BOOL_PRODUCE",
-            "BOOL_RECEIVE"
+            "TEXT_PRODUCER",
+            "BOOL_PRODUCER",
+            "BOOL_CONSUMER"
             ]
     };
 
@@ -82,28 +75,10 @@ app.controller("ServiceCtrl", ["$scope", "$http", function ($scope, $http) {
 }]);
 
 app.controller("ServicesCtrl", ["$scope", "$http", function ($scope, $http) {
-    $scope.services = [
-        {
-            name: "Panic Service",
-            actions: [
-                "BOOL_RECEIVE",
-                "BOOL_PRODUCE",
-                "TEXT_PRODUCE"
-            ]
-        },
-        {
-            name: "SMS Service",
-            actions: [
-                "TEXT_RECEIVE",
-            ]
-        },
-        {
-            name: "Slack",
-            actions: [
-                "TEXT_RECEIVE",
-            ]
-        }
-    ];
+    $http.get("/api/device/list-services")
+        .then(function (data) {
+            $scope.services = data.data;
+        });
 }]);
 app.directive('servicedevice', function($window) {
     return {
@@ -271,7 +246,7 @@ app.config(['$routeProvider','$locationProvider', '$httpProvider', function($rou
             templateUrl: 'app/partials/services.html',
             controller: 'ServicesCtrl'
         })
-        .when('/service', {
+        .when('/service/:id', {
             templateUrl: 'app/partials/service.html',
             controller: 'ServiceCtrl'
         })

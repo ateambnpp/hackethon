@@ -1,11 +1,13 @@
 app.controller("ServiceCtrl", ["$scope", "$http", function ($scope, $http) {
+    //$http.get("/api/success/")
+
+
     $scope.service = {
         name: "Panic Service",
         actions: [
-            "TEXT_PRODUCE",
-            "TEXT_RECEIVE",
-            "BOOL_PRODUCE",
-            "BOOL_RECEIVE"
+            "TEXT_PRODUCER",
+            "BOOL_PRODUCER",
+            "BOOL_CONSUMER"
             ]
     };
 

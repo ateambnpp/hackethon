@@ -41,6 +41,32 @@ router.get('/add/:id', function (req, res) {
     } );
 });
 
+router.get('/list', function (req, res) {
+    var devices = [{
+        name: "Slack Service",
+        id: config.slackService,
+        actions: ["TEXT_CONSUMER"]
+    },{
+        name: "SMS Service",
+        id: config.smsService,
+        actions: ["TEXT_CONSUMER"]
+    },{
+        name: "ALARM",
+        id: config.alarmService,
+        actions: ["BOOL_CONSUMER"]
+    }];
+    res.json(devices);
+});
+
+router.get('/list-services', function (req, res) {
+    var devices = [{
+        name: "Panic Service",
+        id: config.serviceAddress,
+        actions: ["TEXT_PRODUCER","BOOL_CONSUMER","BOOL_PRODUCER"]
+    }];
+    res.json(devices);
+});
+
 router.get("/deploy123", function (req, res) {
     blockchain.doDeploy(function (err, response) {
         if (err) {

@@ -1,21 +1,12 @@
 app.controller("DevicesCtrl", ["$scope", "$http", function ($scope, $http) {
-    $scope.devices = [
-        {
-            name: "Panic Button",
-            id: "ABA2a32234acedfe3323232323",
-            actions: [
-                 "BOOL_OUT",
-            ]
-        },
-        {
-            name: "Alarm",
-            id: "CDEEDEDEFACDE2a32234acedfe3323232323",
-            actions: [
-                 "BOOL_IN",
-            ]
-        },
+    $http.get("/api/device/list")
+        .then(function (data) {
+            console.log(data);
+            $scope.devices = data.data;
+        },function (err) {
+            console.log(err);
+        });
 
-    ];
 
     $scope.newDevice = {};
 
