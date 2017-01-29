@@ -96,7 +96,11 @@ app.controller("ServiceCtrl", ["$scope", "$http", function ($scope, $http) {
                 setTimeout(load, 5000);
             });
     };
-    setInterval(load, 9000);
+
+    $scope.reload = function () {
+        load();
+    };
+
     load();
 
 }]);

@@ -73,13 +73,19 @@ function raiseAlarm(deviceId, next) {
             }
             console.log("GETCONSUMERS", devices);
 
-            var text_args = {message: "Granny has died... dancing... she was happy"};
+            var textArgs = {message: "Your loved one has had a fall.  Better call Saul."};
+            textArgs.message = process.env.TEXT_MESSAGE || textArgs.message;
+
 
             if (devices.indexOf(SMS_SERVICEID) > -1) {
-                sendSMS(text_args);
+                sendSMS(textArgs);
             }
             if (devices.indexOf(SLACK_SERVICEID) > -1) {
-                sendSlack(text_args);
+                textArgs.id = process.env.SLACK_TOKEN;
+
+                callSlack(textArgs, function () {
+                    console.log("called slack");
+                });
             }
         });
     });
@@ -116,6 +122,46 @@ function soundAlarm() {
     postRequest.end();
     postRequest.on('error', function (e) {
         console.error(e);
+    });
+}
+
+function callSlack(args, next) {
+
+    if (!args) {
+        return next({message: "args is required."});
+    }
+    if (!args.id) {
+        return next({message: "args.id is required."});
+    }
+    if (!args.message) {
+        return next({message: "args.message is required."});
+    }
+
+    var postData = JSON.stringify( {"text": args.message});
+
+    var postOptions = {
+        host: 'hooks.slack.com',
+        port: 443,
+        path: '/services/' + args.id,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    var postRequest = https.request(postOptions, function(res) {
+        res.on('data', function (data) {
+            next(null, data)
+        });
+        res.on('error', function (e) {
+            next(e, null)
+        });
+    });
+
+    postRequest.write(postData);
+    postRequest.end();
+    postRequest.on('error', function (e) {
+        next(e, null)
     });
 }
 
