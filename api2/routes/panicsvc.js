@@ -11,7 +11,8 @@ var twilioAccountSID = process.env.TWILIO_ACCOUNT_SID;
 var twilioAuth = process.env.TWILIO_AUTH_TOKEN;
 var NUMBERS = process.env.NUMBERS;
 var FROM_NUMBER = process.env.FROM_NUMBER;
-var SERVICEID = process.env.SERVICEID || "0x228b1290ce8c1718bad99cd8fc1b7fc0a65196ad";
+//var SERVICEID = process.env.SERVICEID || "0xa79edac523f06cc398b35b9db8043b265c511aa0";
+var SERVICEID = "0x904af3f83fd99a870d54229d3d875ce354b3bde4";
 
 if (twilioAccountSID && twilioAuth) {
     twilio = require("twilio")(twilioAccountSID, twilioAuth);
@@ -20,7 +21,8 @@ if (twilioAccountSID && twilioAuth) {
 var SMS_SERVICEID = process.env.SMSID || "SMSID";
 var SLACK_SERVICEID = process.env.SLACKID || "SLACKID";
 var ALARM_ID = process.env.ALARMID || "ALARMID";
-var BUTTON_DEVICE_ID = process.env.BUTTON_DEVICE_ID || "0x0bf0d0764526c268c93f61e58d275a0ccfb58105";
+//var BUTTON_DEVICE_ID = process.env.BUTTON_DEVICE_ID || "0xcc0bd23b7a986c1a13e3447eb409b376ec7e68e2";
+var BUTTON_DEVICE_ID =  "0xa19288db92559088d4010fc0ae510fd2669c3dc2";
 
 
 router.post("/action", function (req, res, next)  {

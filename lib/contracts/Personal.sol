@@ -32,7 +32,7 @@ contract Personal {
         string action;
     }
 
-    mappingServiceConsumer[] mapConsumers;
+    mappingServiceConsumer[] public mapConsumers;
 
     function addConsumer(address _device, address _service, string _action) public {
         mp = mappingServiceConsumer({device:_device, service:_service, action:_action});

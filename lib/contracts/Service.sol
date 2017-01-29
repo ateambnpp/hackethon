@@ -33,4 +33,7 @@ contract Device is Service {
         owner = msg.sender;
     }
 
+    function setOwner(address newOwner) public {
+        owner = newOwner;
+    }
 }
